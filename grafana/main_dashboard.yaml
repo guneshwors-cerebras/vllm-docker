@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: 'vLLM Dashboards'
+    orgId: 1
+    folder: 'vLLM'
+    type: file
+    options:
+      path: /etc/grafana/dashboards
+      reloadIntervalSeconds: 30
+
