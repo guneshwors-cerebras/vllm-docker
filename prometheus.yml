@@ -8,3 +8,12 @@ scrape_configs:
     static_configs:
       - targets:
           - 'vllm:8000'
+  - job_name: dcgm-exporter
+    static_configs:
+      - targets:
+          - 'dcgm-exporter:9400'
+  - job_name: node-exporter
+    static_configs:
+      - targets:
+          - 'node-exporter:9100'
+

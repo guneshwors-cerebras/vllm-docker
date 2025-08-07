@@ -17,17 +17,41 @@ services:
         reservations:
           devices:
             - capabilities: ["gpu"]
+
+  dcgm-exporter:
+    image: nvidia/dcgm-exporter
+    container_name: dcgm-exporter
+    restart: unless-stopped
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: ["gpu"]
+
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node-exporter
+    restart: unless-stopped
+    command:
+      - '--path.rootfs=/host'
+    pid: host
+    volumes:
+      - '/:/host:ro,rslave'
+
   prometheus:
     image: prom/prometheus:latest
+    restart: unless-stopped
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    ports:
-      - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
 
   grafana:
     image: grafana/grafana:latest
+    restart: unless-stopped
     depends_on:
       - prometheus
     ports:
